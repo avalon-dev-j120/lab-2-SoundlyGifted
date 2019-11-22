@@ -4,6 +4,8 @@ import ru.avalon.java.j20.labs.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
 
 /**
  * Задание №2
@@ -54,9 +56,25 @@ public class Task2 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private String read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+//        InputStream inputStream = new FileInputStream(file);
+        Reader reader = new FileReader(file);
+        StringBuilder stringBuilder = new StringBuilder();
+        String text = "";
+        char[] buffer = new char[16];
+        char[] bufferClear = new char[16];
+        
+        while (reader.read(buffer) != -1){
+            for (int i = 0; i < buffer.length; i++) {
+                if (buffer[i] == ' ') {
+                    bufferClear = Arrays.copyOf(buffer, i);
+                }
+            }
+            text = stringBuilder.append(bufferClear).toString();
+        }
+        reader.close();
+        return text;
     }
-
+    
     /**
      * Выполняет запись текстоых данных в файл в текстовом
      * режиме.
@@ -66,6 +84,8 @@ public class Task2 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private void write(File file, String text) throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
+        Writer writer = new FileWriter(file);
+        writer.write(text);
+        writer.close();
+    }  
 }
