@@ -5,6 +5,9 @@ import ru.avalon.java.j20.labs.Task;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Задание №3
@@ -52,9 +55,19 @@ public class Task3 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private Collection<String> read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+        Reader reader = new FileReader(file);
+        Collection<String> buffer;
+        try (BufferedReader input = new BufferedReader(reader)) {
+            buffer = new LinkedList<>();
+            String line;
+            
+                while ((line = input.readLine()) != null) {
+                    buffer.add(line);
+                }
+        }
+        return new ArrayList<>(buffer);
     }
-
+   
     /**
      * Выполняет запись коллекции строковых элементов в файл.
      *
@@ -65,7 +78,11 @@ public class Task3 implements Task {
      * @param collection коллекция строк
      * @throws IOException в случае ошибок ввода-вывода.
      */
-    private void write(File file, Collection<String> collection) throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+    private void write(File file, Collection<String> collection) 
+                                                    throws IOException {
+        try (PrintWriter output = new PrintWriter(file)){
+            for (String line : collection)
+                output.println(line);
+        }
     }
 }

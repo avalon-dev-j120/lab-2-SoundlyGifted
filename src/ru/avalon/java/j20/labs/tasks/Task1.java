@@ -55,15 +55,16 @@ public class Task1 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private String read(File file) throws IOException {
-        InputStream inputStream = new FileInputStream(file);
-        ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream(16);
-        int len;
-        byte[] buffer = new byte[16];
-        
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteOutStream.write(buffer, 0, len);
+        ByteArrayOutputStream byteOutStream;
+        try (InputStream inputStream = new FileInputStream(file)) {
+            byteOutStream = new ByteArrayOutputStream(16);
+            int len;
+            byte[] buffer = new byte[16];
+            
+                while ((len = inputStream.read(buffer)) != -1) {
+                    byteOutStream.write(buffer, 0, len);
+                }
         }
-        inputStream.close();
         return new String(byteOutStream.toByteArray());
     }
 
@@ -76,8 +77,8 @@ public class Task1 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private void write(File file, String text) throws IOException {
-        OutputStream outputStream = new FileOutputStream(file);
-        outputStream.write(text.getBytes());
-        outputStream.close();
+        try (OutputStream outputStream = new FileOutputStream(file)) {
+            outputStream.write(text.getBytes());
+        }
     }
 }
